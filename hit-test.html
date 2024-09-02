@@ -87,6 +87,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       scene.clear = false;
 
       function initXR() {
+console.log("Wir sind in initXR");
         xrButton = new WebXRButton({
           onRequestSession: onRequestSession,
           onEndSession: onEndSession,
