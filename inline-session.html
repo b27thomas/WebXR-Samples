@@ -100,6 +100,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       let xrImmersiveRefSpace = null;
       let xrInlineRefSpace = null;
 
+      // Neu TJ
+      let xrButtonNeu = null;
+
       // WebGL scene globals.
       let gl = null;
       let renderer = null;
@@ -115,9 +118,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         });
         document.querySelector('header').appendChild(xrButton.domElement);
 
+        // Neu TJ
+        xrButtonNeu = new WebXRButton({
+          onRequestSession: onRequestSessionNeu,
+          onEndSession: onEndSession
+        });
+        document.querySelector('header').appendChild(xrButtonNeu.domElement);
+
         if (navigator.xr) {
           navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
             xrButton.enabled = supported;
+          });
+
+          // Neu TJ
+          navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+            xrButtonNeu.enabled = supported;
           });
 
           // Start up an inline session, which should always be supported on
@@ -132,6 +147,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       function onRequestSession() {
         return navigator.xr.requestSession('immersive-vr').then((session) => {
+          xrButton.setSession(session);
+          // Set a flag on the session so we can differentiate it from the
+          // inline session.
+          session.isImmersive = true;
+          onSessionStarted(session);
+        });
+      }
+
+      // Neu TJ
+      function onRequestSessionNeu() {
+        return navigator.xr.requestSession('immersive-ar').then((session) => {
           xrButton.setSession(session);
           // Set a flag on the session so we can differentiate it from the
           // inline session.
