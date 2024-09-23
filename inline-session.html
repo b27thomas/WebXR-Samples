@@ -138,13 +138,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         if (navigator.xr) {
           navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
             xrButton.enabled = supported;
-            arStartedNeu = false;
           });
 
           // Neu TJ
           navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
             xrButtonNeu.enabled = supported;
-            arStartedNeu = true;
           });
 
           // Start up an inline session, which should always be supported on
@@ -163,6 +161,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           // Set a flag on the session so we can differentiate it from the
           // inline session.
           session.isImmersive = true;
+          arStartedNeu = false;
           onSessionStarted(session);
         });
       }
@@ -174,6 +173,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           // Set a flag on the session so we can differentiate it from the
           // inline session.
           session.isImmersive = true;
+          arStartedNeu = true;
           onSessionStarted(session);
         });
       }
