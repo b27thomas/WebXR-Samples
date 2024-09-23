@@ -109,7 +109,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       let scene = new Scene();
       let solarSystem = new Gltf2Node({url: 'media/gltf/space/space.gltf'});
       scene.addNode(solarSystem);
-      scene.addNode(new SkyboxNode({url: 'media/textures/milky-way-4k.png'}));
+      
+      //scene.addNode(new SkyboxNode({url: 'media/textures/milky-way-4k.png'}));
+
+      // Neu TJ
+      let skybox = new SkyboxNode({url: 'media/textures/milky-way-4k.png'});
+      scene.addNode(skybox);
+
 
       function initXR() {
         xrButton = new WebXRButton({
@@ -162,7 +168,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       // Neu TJ
       function onRequestSessionNeu() {
         return navigator.xr.requestSession('immersive-ar').then((session) => {
-          xrButton.setSession(session);
+          xrButtonNeu.setSession(session);
           // Set a flag on the session so we can differentiate it from the
           // inline session.
           session.isImmersive = true;
@@ -172,6 +178,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       function onSessionStarted(session) {
         session.addEventListener('end', onSessionEnded);
+
+        // Neu TJ
+        if (session.isImmersive) {
+          // When in 'immersive-ar' mode don't draw an opaque background because
+          // we want the real world to show through.
+          skybox.visible = false;
+        }
 
         if (!gl) {
           gl = createWebGLContext({
