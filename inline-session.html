@@ -115,7 +115,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       // Neu TJ
       let skybox = new SkyboxNode({url: 'media/textures/milky-way-4k.png'});
       scene.addNode(skybox);
-
+      let arStartedNeu;
 
       function initXR() {
         xrButton = new WebXRButton({
@@ -138,11 +138,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         if (navigator.xr) {
           navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
             xrButton.enabled = supported;
+            arStartedNeu = false;
           });
 
           // Neu TJ
           navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
             xrButtonNeu.enabled = supported;
+            arStartedNeu = true;
           });
 
           // Start up an inline session, which should always be supported on
@@ -180,7 +182,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         session.addEventListener('end', onSessionEnded);
 
         // Neu TJ
-        if (session.isImmersive) {
+        if (session.isImmersive && arStartedNeu) {
           // When in 'immersive-ar' mode don't draw an opaque background because
           // we want the real world to show through.
           skybox.visible = false;
